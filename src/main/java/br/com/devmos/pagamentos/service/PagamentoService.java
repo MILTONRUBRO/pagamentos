@@ -2,6 +2,7 @@ package br.com.devmos.pagamentos.service;
 
 import br.com.devmos.pagamentos.dto.PagamentoDTO;
 import br.com.devmos.pagamentos.model.Pagamento;
+import br.com.devmos.pagamentos.model.Status;
 import org.modelmapper.ModelMapper;
 import br.com.devmos.pagamentos.repository.PagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,24 @@ public class PagamentoService {
     public PagamentoDTO getPagamentosById(Long id){
         Pagamento pagamento = pagamentoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
         return modelMapper.map(pagamento, PagamentoDTO.class);
+    }
+
+    public PagamentoDTO createPagamento(PagamentoDTO dto){
+        Pagamento pagamento = modelMapper.map(dto, Pagamento.class);
+        pagamento.setStatus(Status.CRIADO);
+        pagamentoRepository.save(pagamento);
+
+        return modelMapper.map(pagamento, PagamentoDTO.class);
+    }
+
+    public void updatePagamento(Long id, PagamentoDTO dto){
+        Pagamento pagamento = modelMapper.map(dto, Pagamento.class);
+        pagamento.setId(id);
+        pagamentoRepository.save(pagamento);
+    }
+
+    public void deletePagamento(Long id){
+        pagamentoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        pagamentoRepository.deleteById(id);
     }
 }
