@@ -8,6 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/pagamentos")
@@ -25,4 +29,25 @@ public class PagamentoController {
     public ResponseEntity<PagamentoDTO> getPagamento(@PathVariable Long id){
         return ResponseEntity.ok(pagamentoService.getPagamentosById(id));
     }
+
+    @PostMapping
+    public ResponseEntity<PagamentoDTO> savePagamento(@RequestBody @Valid PagamentoDTO dto, UriComponentsBuilder uriBuilder){
+        PagamentoDTO pagamento = pagamentoService.createPagamento(dto);
+        URI endereco = uriBuilder.path("/pagamentos/{id}").buildAndExpand(pagamento.getId()).toUri();
+        return ResponseEntity.created(endereco).body(pagamento);
+
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PagamentoDTO> updatePagamento(@PathVariable Long id, @RequestBody @Valid PagamentoDTO dto){
+        pagamentoService.updatePagamento(id, dto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<PagamentoDTO> deletePagamento(@PathVariable Long id){
+        pagamentoService.deletePagamento(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
