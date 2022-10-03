@@ -1,10 +1,7 @@
 package br.com.devmos.pagamentos.dto;
 
 import br.com.devmos.pagamentos.model.Status;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -12,6 +9,7 @@ import java.math.BigDecimal;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class PagamentoDTO {
     private Long id;
     private BigDecimal valor;
