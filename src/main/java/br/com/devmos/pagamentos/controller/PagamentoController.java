@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 
 @RestController
@@ -48,6 +49,11 @@ public class PagamentoController {
     public ResponseEntity<PagamentoDTO> deletePagamento(@PathVariable Long id){
         pagamentoService.deletePagamento(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/confirmar")
+    public void confirmarPagamento(@PathVariable @NotNull Long id){
+        pagamentoService.confirmarPagamento(id);
     }
 
 }
